@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ujian_api/model/listWork.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -9,20 +10,37 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool isLoading = false;
-
-  void handleSubmit() {
+  // controllers untuk menangkap input
+  final TextEditingController namaDepanController = TextEditingController();
+  final TextEditingController namaBelakangController = TextEditingController();
+  final TextEditingController umurController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  Future<void> handleSubmit() async {
+    // Mulai loading dan non-aktifkan button
     setState(() {
       isLoading = true;
     });
 
-    // Simulasi proses loading (ganti dengan API call nanti)
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    });
+    // waktu loading
+    await Future.delayed(const Duration(seconds: 2));
+
+    // Ambil nilai input (tidak disimpan/permanen; hanya untuk penggunaan lokal jika diperlukan)
+
+    if (!mounted) return;
+
+    // Navigasi ke ListWork (tanpa mengoper data)
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const ListWorkPage()));
+  }
+
+  @override
+  void dispose() {
+    namaDepanController.dispose();
+    namaBelakangController.dispose();
+    umurController.dispose();
+    emailController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,6 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               // Nama Depan
               TextField(
+                controller: namaDepanController,
                 decoration: InputDecoration(
                   labelText: 'Nama Depan',
                   hintText: 'Masukkan nama depan Anda',
@@ -66,6 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               // Nama Belakang
               TextField(
+                controller: namaBelakangController,
                 decoration: InputDecoration(
                   labelText: 'Nama Belakang',
                   hintText: 'Masukkan nama belakang Anda',
@@ -79,6 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               // Umur
               TextField(
+                controller: umurController,
                 decoration: InputDecoration(
                   labelText: 'Umur',
                   hintText: 'Masukkan umur Anda',
@@ -92,6 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               // Email
               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   hintText: 'Masukkan email Anda',
